@@ -1,0 +1,14 @@
+C:\Users\Ruslan Vladimirovich\source\repos\ConsoleApp_Level1\bin\Debug\net8.0\ConsoleApp_Level1.exe
+C:\Users\Ruslan Vladimirovich\source\repos\ConsoleApp_Level1\bin\Debug\net8.0\ConsoleApp_Level1.deps.json
+C:\Users\Ruslan Vladimirovich\source\repos\ConsoleApp_Level1\bin\Debug\net8.0\ConsoleApp_Level1.runtimeconfig.json
+C:\Users\Ruslan Vladimirovich\source\repos\ConsoleApp_Level1\bin\Debug\net8.0\ConsoleApp_Level1.dll
+C:\Users\Ruslan Vladimirovich\source\repos\ConsoleApp_Level1\bin\Debug\net8.0\ConsoleApp_Level1.pdb
+C:\Users\Ruslan Vladimirovich\source\repos\ConsoleApp_Level1\obj\Debug\net8.0\ConsoleApp_Level1.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Ruslan Vladimirovich\source\repos\ConsoleApp_Level1\obj\Debug\net8.0\ConsoleApp_Level1.AssemblyInfoInputs.cache
+C:\Users\Ruslan Vladimirovich\source\repos\ConsoleApp_Level1\obj\Debug\net8.0\ConsoleApp_Level1.AssemblyInfo.cs
+C:\Users\Ruslan Vladimirovich\source\repos\ConsoleApp_Level1\obj\Debug\net8.0\ConsoleApp_Level1.csproj.CoreCompileInputs.cache
+C:\Users\Ruslan Vladimirovich\source\repos\ConsoleApp_Level1\obj\Debug\net8.0\ConsoleApp_Level1.dll
+C:\Users\Ruslan Vladimirovich\source\repos\ConsoleApp_Level1\obj\Debug\net8.0\refint\ConsoleApp_Level1.dll
+C:\Users\Ruslan Vladimirovich\source\repos\ConsoleApp_Level1\obj\Debug\net8.0\ConsoleApp_Level1.pdb
+C:\Users\Ruslan Vladimirovich\source\repos\ConsoleApp_Level1\obj\Debug\net8.0\ConsoleApp_Level1.genruntimeconfig.cache
+C:\Users\Ruslan Vladimirovich\source\repos\ConsoleApp_Level1\obj\Debug\net8.0\ref\ConsoleApp_Level1.dll

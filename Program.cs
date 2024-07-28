@@ -14,7 +14,7 @@ namespace ConsoleApp_Level1
         class Person
         {
             public string fio { get; set; }
-            public string dateBirth { get; set; }
+            //public string dateBirth { get; set; }
             public byte day { get; set; }
             public byte month { get; set; }
             public ushort year { get; set; }
@@ -29,7 +29,7 @@ namespace ConsoleApp_Level1
             }
         }
 
-        static void printMenu(string[] items, int row, int col, int index, int indexFirst)
+        static void printMenu(string[] items, int row, int col, int index, int indexFirst) // Печать меню
         {
             Console.SetCursorPosition(col, row);
             Console.WriteLine("\n\n                               )\\\r\n                              (__)");
@@ -69,11 +69,12 @@ namespace ConsoleApp_Level1
 
         static void createBinaryFile(string path, List<Person> persons) // Создание | Чтение файла
         {
-            Console.WriteLine("\nName of file: " + path);
+            Console.WriteLine("\n Введите имя файла: " + path);
             if (File.Exists(path))
             {
-                Console.WriteLine("\n File exists, " +
-                    "Open file " + path + "\n");
+                Console.WriteLine("\n Файл с таким именем найден, " +
+                    "попытка чтения данных " + path + "\n");
+                persons.Clear();
                 using (BinaryReader reader = new BinaryReader(File.Open(path, FileMode.Open)))
                 {
                     //пока не конец
@@ -90,37 +91,47 @@ namespace ConsoleApp_Level1
             }
             else
             {
-                Console.WriteLine("File doesn't exist. Create new file.\n");
+                Console.WriteLine("Файл с таким именем не найден. Создание нового файла.\n");
+                persons.Clear();
                 using (BinaryWriter writer = new BinaryWriter(File.Open(path, FileMode.OpenOrCreate)))
                 {
-                    Console.WriteLine("New file was created successfully\n");
+                    Console.WriteLine("Новый файл " + path + " был создан успешно.");
                 }
             }
+            Console.WriteLine("Выход в главное меню.");
             Console.ReadKey();
             Console.Clear();
         }
 
         static void SaveBinaryFile(string path, List<Person> persons) // Сохранение файла
         {
-            Console.WriteLine("\nCheck existing of file" + path);
-            if (File.Exists(path))
+            if (persons.Count == 0)
             {
-                using (BinaryWriter writer = new BinaryWriter(File.Open(path, FileMode.OpenOrCreate)))
-                {
-                    foreach (Person person in persons)
-                    {
-                        writer.Write(person.fio);
-                        writer.Write(person.dateBirth);
-                    }
-
-                }
-                Console.WriteLine("\nFile exist. Save file success.");
+                Console.WriteLine("В списке Поздравлятора нет записей :(");
                 Console.ReadKey();
                 Console.Clear();
+                return;
             }
+            Console.WriteLine("\nПопытка сохранения данных в файл " + path);
+            using (BinaryWriter writer = new BinaryWriter(File.Open(path, FileMode.OpenOrCreate)))
+            {
+                foreach (Person person in persons)
+                {
+                    writer.Write(person.fio);
+                    writer.Write(person.day);
+                    writer.Write(person.month);
+                    writer.Write(person.year);
+                }
+
+            }
+            Console.WriteLine("\nДанные были успешно сохранены.");
+            Console.WriteLine("Выход в главное меню.");
+            Console.ReadKey();
+            Console.Clear();
         }
 
         static void addPerson(List<Person> persons) // Добавление новой записи
+                                                    // TODO: чтобы добавлялся в едином формате - чтобы при удалении и редактировании при поиске не возникали сложности
         {
             try
             {
@@ -138,6 +149,16 @@ namespace ConsoleApp_Level1
                 Console.WriteLine("\nВведите год рождения человека (число) -> ");
                 temp.year = ushort.Parse(Console.ReadLine());
                 if (temp.year == null || temp.year > DateTime.Now.Year) throw new Exception();
+                foreach(Person person in persons)
+                {
+                    if (temp.fio == person.fio && temp.day == person.day && temp.month == person.month && temp.year == person.year)
+                    {
+                        Console.WriteLine("Возникла ошибка. Запись с такими данными уже есть в базе. Возврат в главное меню.");
+                        Console.ReadKey();
+                        Console.Clear();
+                        return;
+                    }
+                }
                 persons.Add(temp);
                 Console.WriteLine("Запись добавлена успешно. Возврат влавное меню.");
                 Console.ReadKey();
@@ -152,17 +173,75 @@ namespace ConsoleApp_Level1
             }
         }
 
-        static void showAll(List<Person> persons) // Печать всех записей
+        static void deletePerson(List<Person> persons) // Удаление записи
         {
             if (persons.Count == 0)
             {
                 Console.WriteLine("В списке Поздравлятора нет записей :(");
                 Console.ReadKey();
-                Console.Clear();   
+                Console.Clear();
+                return;
+            }
+            Console.WriteLine("Введите ФИО записи, которую вы хотите удалить.");
+            string inputFio=Console.ReadLine();
+            Console.Write("Идёт поиск записи ");
+            Thread.Sleep(333); Console.Write(".");
+            Thread.Sleep(333); Console.Write(".");
+            Thread.Sleep(333); Console.Write(".");
+            Thread.Sleep(333); Console.Write(".");
+            Thread.Sleep(333); Console.Write(".\n");
+            foreach (Person person in persons) 
+            {
+                if (inputFio == person.fio) 
+                {
+                    Console.WriteLine($"Запись с ФИО: {inputFio} найдена, ее дата рождения: {person.day}.{person.month}.{person.year}.");
+                    Console.WriteLine("!Подтвердите операцию!");
+                    Console.WriteLine("'Y' - УДАЛИТЬ \n 'N' - СОХРАНИТЬ");
+                    switch (Console.ReadKey(true).Key)
+                    {
+                        case ConsoleKey.Y:
+                            persons.Remove(person);
+                            Console.WriteLine("Данные записи были успешно удалены. Возврат в главное меню.");
+                            Console.ReadKey();
+                            Console.Clear();
+                            return;
+                            break;
+                        case ConsoleKey.N:
+                            Console.WriteLine("Данные о записи были сохранены. Возврат в главное меню.");
+                            Console.ReadKey();
+                            Console.Clear();
+                            return;
+                            break;
+                        default:
+                            Console.WriteLine("Ошибка ввода. Возврат в главное меню.");
+                            Console.ReadKey();
+                            Console.Clear();
+                            return;
+                            break;
+                    }
+                }
+            }
+            Console.WriteLine($"Запись с ФИО = {inputFio} не была найдена. Возврат в главное меню.");
+            Console.ReadKey();
+            Console.Clear();
+            return;
+        }
+
+        static void showAll(List<Person> persons, int countDayFrom, int countDayTo) // Печать всех записей 
+                                                                                    // TODO: Реализовать, чтобы выводилось 10 записей, можно было листать стрелочками влево/вправо, на ESC выход из режима просмотра
+        {
+            if (persons.Count == 0)
+            {
+                Console.WriteLine("В списке Поздравлятора нет записей :(");
+                Console.ReadKey();
+                Console.Clear();
                 return;
             }
             Console.Clear();
-            Console.WriteLine("\t\t Список всех записей");
+            Console.WriteLine(" \n \t\t   Список всех записей");
+            Console.WriteLine("\n-------------------------------------------------------------------" +
+                        "\r\n|     Фамилия Имя Отчество     | Дата рождения | Лет | Через Дней |");
+            Console.WriteLine("-------------------------------------------------------------------");
             DateTime futurDate;
             ushort futurAge;
             ushort futurYear;
@@ -183,18 +262,54 @@ namespace ConsoleApp_Level1
                 {
                     futurYear = Convert.ToUInt16(TodayDate.Year);
                     futurDate = new DateTime(futurYear, person.month, person.day);
-                    dayToBirth = (futurDate - TodayDate).Days;
+                    dayToBirth = (futurDate - TodayDate).Days + 1;
                 }
-                Console.WriteLine("\n" + person.fio + " " + person.day + "." + person.month + "." + person.year + " - Исполнится " + futurAge + " через " + dayToBirth + " дней");
+                if (dayToBirth >= countDayFrom && dayToBirth <= countDayTo)
+                {
+                    string date = $"{person.day}.{person.month}.{person.year}";
+                    Console.Write($"|{person.fio,-30}|{date,15}|{futurAge,5}|");
+                    if (dayToBirth >= 0 && dayToBirth < 3)
+                    {
+                        Console.BackgroundColor = ConsoleColor.Yellow;
+                        Console.ForegroundColor = ConsoleColor.Black;
+                    }
+                    else if (dayToBirth >= 3 && dayToBirth < 7)
+                    {
+                        Console.BackgroundColor = ConsoleColor.Green;
+                        Console.ForegroundColor = ConsoleColor.White;
+                    }
+                    else if (dayToBirth >= 14 && dayToBirth <= 14)
+                    {
+                        Console.BackgroundColor = ConsoleColor.DarkGreen;
+                        Console.ForegroundColor = ConsoleColor.White;
+                    }
+                    else if (dayToBirth >= -7 && dayToBirth < 0)
+                    {
+                        Console.BackgroundColor = ConsoleColor.White;
+                        Console.ForegroundColor = ConsoleColor.DarkRed;
+                        dayToBirth *= -1;
+                    }
+                    else
+                    {
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.ForegroundColor = ConsoleColor.White;
+                    }
+                    if (true)
+                    {
+                        Console.Write($"{dayToBirth,12}|\n");
+                        Console.ResetColor();
+                    }
+                    Console.WriteLine("-------------------------------------------------------------------");
+                }
             }
-        Console.ReadKey();
-        Console.Clear();
+            Console.ReadKey();
+            Console.Clear();
         }
 
         static void Main(string[] args) // Точка входа
         {
             Console.Title = "Поздравлятор";
-            Console.SetWindowSize(65, 50);
+            Console.SetWindowSize(70, 50);
             int row = 0;
             int col = 0;
             string[] menuItems = new string[] { 
@@ -250,16 +365,27 @@ namespace ConsoleApp_Level1
                         switch (index) // меню действий
                         {
                             case 0: // Показать весь список | Показать ближайшие (неделя) | Показать прошедшие (неделя)
-                                showAll(persons);
+                                if (indexFirst==0)
+                                {
+                                    showAll(persons,-365,365);
+                                }
+                                if (indexFirst == 1)
+                                {
+                                    showAll(persons,0,14);
+                                }
+                                if (indexFirst == 2)
+                                {
+                                    showAll(persons,-7,-1); 
+                                }
                                 break;
                             case 1:  // Add
                                 addPerson(persons);
                                 break;
                             case 2: // Delete
-
+                                deletePerson(persons); 
                                 break;
                             case 3: // Edit
-
+                                //editPerson(persons);
                                 break;
                             case 4: // Create or Read
                                 Console.WriteLine("\nВведите имя файла (новое для создания или существующее для загрузки данных)\n");

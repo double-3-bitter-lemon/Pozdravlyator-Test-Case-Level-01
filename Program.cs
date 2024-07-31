@@ -526,7 +526,7 @@ namespace ConsoleApp_Level1
                         break;
                     case ConsoleKey.Escape:
                         Console.Clear();
-                        Console.WriteLine("Спасибо за запуск моего конмольного приложения <<Поздравлятор>>");
+                        Console.WriteLine("Спасибо за запуск моего консольного приложения <<Поздравлятор>>");
                         Console.WriteLine("Если Вы найдете ошибку или баг - ruslan.pivnik@yandex.ru");
                         Console.WriteLine("Нажмите [Enter], чтобы перейти на github разработчика");
                         Console.WriteLine("Нажмите [Escape], чтобы закрыть консольное приложение");
